@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Band Practice Organizer</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        .gradient-text {
+            background: linear-gradient(45deg, #FF3366, #FF6B6B);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .card {
+            border: 2px solid #2d3748;
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            border-color: #FF3366;
+            box-shadow: 0 0 20px rgba(255, 51, 102, 0.2);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-900 text-gray-100">
+    <!-- Decorative background elements -->
+    <div class="fixed inset-0 z-0 opacity-20">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-pink-600 rounded-full filter blur-3xl"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 bg-purple-600 rounded-full filter blur-3xl"></div>
+    </div>
+
+    <!-- Main content -->
+    <div class="relative z-10">
+        <!-- Header -->
+        <header class="bg-gray-800 border-b border-gray-700">
+            <div class="container mx-auto px-4 py-6">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center space-x-4">
+                        <h1 class="text-3xl font-bold gradient-text">BandSync</h1>
+                        <span class="text-gray-400">|</span>
+                        <nav class="hidden md:flex space-x-6">
+                            <a href="#schedule" class="hover:text-pink-500">Schedule</a>
+                            <a href="#setlist" class="hover:text-pink-500">Set List</a>
+                            <a href="#equipment" class="hover:text-pink-500">Equipment</a>
+                            <a href="#recordings" class="hover:text-pink-500">Recordings</a>
+                        </nav>
+                    </div>
+                    <button class="bg-gradient-to-r from-pink-500 to-red-500 px-6 py-2 rounded-full 
+                                 hover:from-pink-600 hover:to-red-600 transition-all duration-300">
+                        New Session
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Grid -->
+        <main class="container mx-auto px-4 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Schedule -->
+                <section class="card bg-gray-800 rounded-xl p-6 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-xl font-semibold">📅 Schedule</h2>
+                        <button class="text-pink-500 hover:text-pink-400">Add Event</button>
+                    </div>
+                    <div class="bg-gray-700 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-lg font-medium">Next Practice</span>
+                            <span class="text-pink-500">Today</span>
+                        </div>
+                        <div class="flex items-center space-x-2 text-gray-300">
+                            <span>7:00 PM</span>
+                            <span>•</span>
+                            <span>Studio A</span>
+                        </div>
+                    </div>
+                    <div class="divide-y divide-gray-700">
+                        <div class="py-3">Friday, 8:00 PM - Full Band</div>
+                        <div class="py-3">Sunday, 2:00 PM - Acoustic Set</div>
+                    </div>
+                </section>
+
+                <!-- Set List -->
+                <section class="card bg-gray-800 rounded-xl p-6">
+                    <h2 class="text-xl font-semibold mb-4">🎵 Set List</h2>
+                    <div class="space-y-3">
+                        <div class="flex items-center">
+                            <input type="text" 
+                                   class="flex-1 bg-gray-700 border-2 border-gray-600 rounded-l-lg px-4 py-2 
+                                          focus:outline-none focus:border-pink-500"
+                                   placeholder="Add song...">
+                            <button class="bg-pink-500 px-4 py-2 rounded-r-lg hover:bg-pink-600">Add</button>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between bg-gray-700 p-3 rounded-lg">
+                                <span>1. Black Dog</span>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-gray-400">5:27</span>
+                                    <button class="text-gray-400 hover:text-pink-500">⋮</button>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between bg-gray-700 p-3 rounded-lg">
+                                <span>2. Sweet Emotion</span>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-gray-400">4:33</span>
+                                    <button class="text-gray-400 hover:text-pink-500">⋮</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Equipment -->
+                <section class="card bg-gray-800 rounded-xl p-6">
+                    <h2 class="text-xl font-semibold mb-4">🎸 Equipment</h2>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between bg-gray-700 p-3 rounded-lg">
+                            <label class="flex items-center space-x-3">
+                                <input type="checkbox" class="form-checkbox h-5 w-5 text-pink-500">
+                                <span>Instruments</span>
+                            </label>
+                            <span class="text-gray-400">5 items</span>
+                        </div>
+                        <div class="flex items-center justify-between bg-gray-700 p-3 rounded-lg">
+                            <label class="flex items-center space-x-3">
+                                <input type="checkbox" class="form-checkbox h-5 w-5 text-pink-500">
+                                <span>Sound System</span>
+                            </label>
+                            <span class="text-gray-400">3 items</span>
+                        </div>
+                        <button class="w-full bg-gray-700 text-gray-300 p-3 rounded-lg hover:bg-gray-600">
+                            Add Equipment Category
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Recordings -->
+                <section class="card bg-gray-800 rounded-xl p-6">
+                    <h2 class="text-xl font-semibold mb-4">🎤 Recordings</h2>
+                    <div class="space-y-3">
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <div class="flex items-center justify-between mb-2">
+                                <span>Bridge Section.mp3</span>
+                                <span class="text-gray-400">2:34</span>
+                            </div>
+                            <div class="bg-gray-600 h-1 rounded-full">
+                                <div class="bg-pink-500 w-1/3 h-full rounded-full"></div>
+                            </div>
+                        </div>
+                        <button class="w-full flex items-center justify-center space-x-2 bg-gray-700 p-3 rounded-lg 
+                                     hover:bg-gray-600">
+                            <span>Record New</span>
+                            <span class="text-red-500">●</span>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Notes -->
+                <section class="card bg-gray-800 rounded-xl p-6 md:col-span-2">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xl font-semibold">📝 Practice Notes</h2>
+                        <div class="flex items-center space-x-2">
+                            <button class="text-gray-400 hover:text-pink-500">Share</button>
+                            <button class="text-gray-400 hover:text-pink-500">Export</button>
+                        </div>
+                    </div>
+                    <textarea 
+                        class="w-full h-40 bg-gray-700 border-2 border-gray-600 rounded-lg p-4 
+                               focus:outline-none focus:border-pink-500 resize-none"
+                        placeholder="Add notes for the session..."></textarea>
+                </section>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

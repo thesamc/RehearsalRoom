@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Band Practice Organizer</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        .gradient-text {
+            background: linear-gradient(45deg, #00ff00, #00ffff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .card {
+            border: 2px solid #00ff00;
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            border-color: #00ffff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+        }
+        .recording {
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { background-color: #00ff00; }
+            50% { background-color: #008000; }
+            100% { background-color: #00ff00; }
+        }
+        body {
+            background-color: #000000;
+        }
+        .bg-custom-dark {
+            background-color: #121212;
+        }
+        .border-neon {
+            border-color: #00ff00;
+        }
+        .text-neon {
+            color: #00ff00;
+        }
+        .hover-neon:hover {
+            color: #00ffff;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-gray-100">
+    <!-- Decorative background elements -->
+    <div class="fixed inset-0 z-0 opacity-20">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-green-500 rounded-full filter blur-3xl"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 bg-cyan-500 rounded-full filter blur-3xl"></div>
+    </div>
+
+    <!-- Main content -->
+    <div class="relative z-10">
+        <!-- Header -->
+        <header class="bg-custom-dark border-b border-neon">
+            <div class="container mx-auto px-4 py-6">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center space-x-4">
+                        <h1 class="text-3xl font-bold gradient-text">Call My Bluff</h1>
+                        <span class="text-gray-400">|</span>
+                        <nav class="hidden md:flex space-x-6">
+                            <a href="#schedule" class="hover:text-cyan-400">Schedule</a>
+                            <a href="#setlist" class="hover:text-cyan-400">Set List</a>
+                        </nav>
+                    </div>
+                    <button class="bg-gradient-to-r from-green-500 to-cyan-500 px-6 py-2 rounded-full 
+                                 hover:from-green-400 hover:to-cyan-400 transition-all duration-300">
+                        New Session
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Grid -->
+        <main class="container mx-auto px-4 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Schedule -->
+                <section id="schedule" class="card bg-custom-dark rounded-xl p-6 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-xl font-semibold">📅 Schedule</h2>
+                        <button onclick="showAddEventModal()" class="text-neon hover-neon">Add Event</button>
+                    </div>
+                    <div id="schedule-list" class="space-y-3">
+                        <!-- Schedule items will be rendered here -->
+                    </div>
+                </section>
+
+                <!-- Set List -->
+                <section id="setlist" class="card bg-custom-dark rounded-xl p-6">
+                    <h2 class="text-xl font-semibold mb-4">🎵 Set List</h2>
+                    <div class="space-y-3">
+                        <form id="add-song-form" class="flex items-center">
+                            <input type="text" 
+                                   id="song-input"
+                                   class="flex-1 bg-gray-900 border-2 border-neon rounded-l-lg px-4 py-2 
+                                          focus:outline-none focus:border-cyan-400"
+                                   placeholder="Add song...">
+                            <button type="submit" class="bg-green-500 px-4 py-2 rounded-r-lg hover:bg-cyan-400">Add</button>
+                        </form>
+                        <div id="song-list" class="space-y-2">
+                            <!-- Songs will be rendered here -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Equipment -->
+                <section id="equipment" class="card bg-custom-dark rounded-xl p-6">
+                    <h2 class="text-xl font-semibold mb-4">🎸 Equipment</h2>
+                    <div id="equipment-list" class="space-y-3">
+                        <!-- Equipment items will be rendered here -->
+                    </div>
+                    <button onclick="showAddEquipmentModal()" 
+                            class="w-full mt-4 bg-gray-900 text-neon p-3 rounded-lg hover:bg-gray-800">
+                        Add Equipment Category
+                    </button>
+                </section>
+
+                <!-- Recordings -->
+                <section id="recordings" class="card bg-custom-dark rounded-xl p-6">
+                    <h2 class="text-xl font-semibold mb-4">🎤 Recordings</h2>
+                    <div id="recordings-list" class="space-y-3">
+                        <!-- Recordings will be rendered here -->
+                    </div>
+                    <button id="record-button" 
+                            onclick="toggleRecording()"
+                            class="w-full mt-4 flex items-center justify-center space-x-2 bg-gray-900 p-3 rounded-lg 
+                                   hover:bg-gray-800">
+                        <span>Record New</span>
+                        <span class="text-green-500">●</span>
+                    </button>
+                </section>
+
+                <!-- Notes -->
+                <section class="card bg-custom-dark rounded-xl p-6 md:col-span-2">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xl font-semibold">📝 Practice Notes</h2>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="shareNotes()" class="text-gray-400 hover:text-cyan-400">Share</button>
+                            <button onclick="exportNotes()" class="text-gray-400 hover:text-cyan-400">Export</button>
+                        </div>
+                    </div>
+                    <textarea 
+                        id="practice-notes"
+                        class="w-full h-40 bg-gray-900 border-2 border-neon rounded-lg p-4 
+                               focus:outline-none focus:border-cyan-400 resize-none"
+                        placeholder="Add notes for the session..."></textarea>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // [Rest of the JavaScript code remains unchanged]
+        // State Management
+        const state = {
+            schedule: [
+                { date: 'Today', time: '7:00 PM', location: 'Studio A' },
+                { date: 'Friday', time: '8:00 PM', type: 'Full Band' },
+                { date: 'Sunday', time: '2:00 PM', type: 'Acoustic Set' }
+            ],
+            songs: [
+                { title: 'Black Dog', duration: '5:27' },
+                { title: 'Sweet Emotion', duration: '4:33' }
+            ],
+            equipment: [
+                { category: 'Instruments', items: 5, checked: false },
+                { category: 'Sound System', items: 3, checked: false }
+            ],
+            recordings: [
+                { name: 'Bridge Section.mp3', duration: '2:34', progress: 33 }
+            ],
+            notes: ''
+        };
+
+        // Event Handlers
+        function addSong(e) {
+            e.preventDefault();
+            const songInput = document.querySelector('#song-input');
+            const songTitle = songInput.value.trim();
+            if (!songTitle) return;
+
+            state.songs.push({
+                title: songTitle,
+                duration: '0:00'
+            });
+            
+            renderSongs();
+            songInput.value = '';
+        }
+
+        function removeSong(index) {
+            state.songs.splice(index, 1);
+            renderSongs();
+        }
+
+        function toggleEquipment(index) {
+            state.equipment[index].checked = !state.equipment[index].checked;
+            renderEquipment();
+        }
+
+        function shareNotes() {
+            const notes = document.querySelector('#practice-notes').value;
+            navigator.clipboard.writeText(notes)
+                .then(() => alert('Notes copied to clipboard!'))
+                .catch(err => console.error('Failed to copy notes:', err));
+        }
+
+        function exportNotes() {
+            const notes = document.querySelector('#practice-notes').value;
+            const blob = new Blob([notes], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'practice-notes.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Rendering Functions
+        function renderSchedule() {
+            const scheduleList = document.querySelector('#schedule-list');
+            scheduleList.innerHTML = state.schedule.map(event => `
+                <div class="bg-gray-900 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-lg font-medium">${event.date}</span>
+                        <span class="text-green-500">${event.time}</span>
+                    </div>
+                    <div class="flex items-center space-x-2 text-gray-300">
+                        <span>${event.location || event.type}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderSongs() {
+            const songList = document.querySelector('#song-list');
+            songList.innerHTML = state.songs.map((song, index) => `
+                <div class="flex items-center justify-between bg-gray-900 p-3 rounded-lg">
+                    <span>${index + 1}. ${song.title}</span>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-gray-400">${song.duration}</span>
+                        <button onclick="removeSong(${index})" class="text-gray-400 hover:text-cyan-400">⋮</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderEquipment() {
+            const equipmentList = document.querySelector('#equipment-list');
+            equipmentList.innerHTML = state.equipment.map((item, index) => `
+                <div class="flex items-center justify-between bg-gray-900 p-3 rounded-lg">
+                    <label class="flex items-center space-x-3">
+                        <input type="checkbox" 
+                               class="form-checkbox h-5 w-5 text-green-500"
+                               ${item.checked ? 'checked' : ''}
+                               onchange="toggleEquipment(${index})">
+                        <span>${item.category}</span>
+                    </label>
+                    <span class="text-gray-400">${item.items} items</span>
+                </div>
+            `).join('');
+        }
+
+        function renderRecordings() {
+            const recordingsList = document.querySelector('#recordings-list');
+            recordingsList.innerHTML = state.recordings.map(recording => `
+                <div class="bg-gray-900 p-4 rounded-lg">
+                    <div class="flex items-center justify-between mb-2">
+                        <span>${recording.name}</span>
+                        <span class="text-gray-400">${recording.duration}</span>
+                    </div>
+                    <div class="bg-gray-800 h-1 rounded-full">
+                        <div class="bg-green-500" style="width: ${recording.progress}%; height: 100%; border-radius: 9999px;"></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Recording functionality
+        let mediaRecorder;
+        let audioChunks = [];
+        let isRecording = false;
+
+        async function toggleRecording() {
+            if (!isRecording) {
+                await startRecording();
+            } else {
+                stopRecording();
+            }
+            isRecording = !isRecording;
+        }
+
+        async function startRecording() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                
+                mediaRecorder.ondataavailable = (event) => {
+                    audioChunks.push(event.data);
+                };
+
+                mediaRecorder.onstop = () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/mp3' });
+                    const audioUrl = URL.createObjectURL(audioBlob);
+                    state.recordings.push({
+                        name: `Recording ${state.recordings.length + 1}.mp3`,
+                        duration: '0:00',
+                        progress: 0,
+                        url: audioUrl
+                    });
+                    renderRecordings();
+                    audioChunks = [];
+                };
+
+                mediaRecorder.start();
+                document.querySelector('#record-button').classList.add('recording');
+            } catch (err) {
+                console.error('Error accessing microphone:', err);
+                alert('Unable to access microphone. Please check permissions.');
+                isRecording = false;
+            }
+        }
+
+        function stopRecording() {
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+                mediaRecorder.stop();
+                document.querySelector('#record-button').classList.remove('recording');
+            }
+        }
+
+        // Initialize
+        function init() {
+            document.querySelector('#add-song-form').addEventListener('submit', addSong);
+            
+            const notesTextarea = document.querySelector('#practice-notes');
+            notesTextarea.addEventListener('input', e => {
+                state.notes = e.target.value;
+                localStorage.setItem('bandPracticeNotes', state.notes);
+            });
+
+            const savedNotes = localStorage.getItem('bandPracticeNotes');
+            if (savedNotes) {
+                state.notes = savedNotes;
+                notesTextarea.value = savedNotes;
+            }
+
+            renderSchedule();
+            renderSongs();
+            renderEquipment();
+            renderRecordings();
+        }
+
+        // Initialize the app when the DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
